@@ -1,8 +1,9 @@
 import Logo from '../assets/images/Logo.png';
+import { LoadingButton } from '@mui/lab';
 import {
+  Alert,
   Avatar,
   Box,
-  Button,
   Checkbox,
   Container,
   CssBaseline,
@@ -23,6 +24,52 @@ const theme = createTheme();
 
 export const SignIn = () => {
   const [redirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [userInput, setUserInput] = useState({
+    email: '',
+    password: '',
+  });
+  const [firebaseError, setFirebaseError] = useState('');
+  const [validationErrors, setValidationErrors] = useState({
+    email: '',
+    password: '',
+  });
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserInput((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    validateInput(e);
+  };
+
+  const validateInput = (e) => {
+    let { name, value } = e.target;
+    setValidationErrors((prev) => {
+      const stateObj = { ...prev, [name]: '' };
+
+      switch (name) {
+        case 'email':
+          if (!value) {
+            stateObj[name] = 'Please enter your registered email address.';
+          }
+
+          break;
+
+        case 'password':
+          if (!value) {
+            stateObj[name] = 'Please enter your sign in password.';
+          }
+          break;
+
+        default:
+          break;
+      }
+
+      return stateObj;
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,12 +77,18 @@ export const SignIn = () => {
     const email = data.get('email');
     const password = data.get('password');
     try {
+      setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
+      setLoading(false);
       setRedirect(true);
     } catch (error) {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+      if (error.code === 'auth/wrong-password')
+        setFirebaseError('Please enter correct password');
+      if (error.code === 'auth/user-not-found')
+        setFirebaseError('User is not registered');
+      console.log(errorCode);
+      setLoading(false);
     }
   };
 
@@ -65,6 +118,7 @@ export const SignIn = () => {
             noValidate
             sx={{ mt: 1 }}
           >
+            {firebaseError && <Alert severity="error">{firebaseError}</Alert>}
             <TextField
               margin="normal"
               required
@@ -74,6 +128,15 @@ export const SignIn = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={onInputChange}
+              onBlur={validateInput}
+              helperText={
+                validationErrors.email && (
+                  <small style={{ color: 'red', fontSize: 'small' }}>
+                    {validationErrors.email}
+                  </small>
+                )
+              }
             />
             <TextField
               margin="normal"
@@ -84,19 +147,36 @@ export const SignIn = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={onInputChange}
+              onBlur={validateInput}
+              helperText={
+                validationErrors.password && (
+                  <small style={{ color: 'red', fontSize: 'small' }}>
+                    {validationErrors.password}
+                  </small>
+                )
+              }
             />
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Button
+            <LoadingButton
+              loading={loading}
               type="submit"
+              disabled={
+                validationErrors.email !== '' ||
+                validationErrors.password !== '' ||
+                userInput.email === '' ||
+                userInput.password === ''
+              }
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
-            </Button>
+            </LoadingButton>
             <Grid container>
               <Grid item xs>
                 <Link href="/forgotPassword" variant="body2">

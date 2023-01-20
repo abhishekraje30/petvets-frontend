@@ -83,13 +83,13 @@ export const SignUp = (props) => {
 
         case 'password':
           if (!value) {
-            stateObj[name] = 'Please enter Password.';
+            stateObj[name] = 'Please enter password.';
           } else if (
             userInput.confirmPassword &&
             value !== userInput.confirmPassword
           ) {
             stateObj['confirmPassword'] =
-              'Password and Confirm Password does not match.';
+              'Password and confirm password does not match.';
           } else {
             stateObj['confirmPassword'] = userInput.confirmPassword
               ? ''
@@ -99,9 +99,9 @@ export const SignUp = (props) => {
 
         case 'confirmPassword':
           if (!value) {
-            stateObj[name] = 'Please enter Confirm Password.';
+            stateObj[name] = 'Please enter confirm password.';
           } else if (userInput.password && value !== userInput.password) {
-            stateObj[name] = 'Password and Confirm Password does not match.';
+            stateObj[name] = 'Password and confirm password does not match.';
           }
           break;
 
@@ -181,7 +181,7 @@ export const SignUp = (props) => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          {firebaseError && <Alert severity="error">{firebaseError}</Alert>}
+
           <Box
             component="form"
             noValidate
@@ -189,6 +189,11 @@ export const SignUp = (props) => {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
+              {firebaseError && (
+                <Grid item xs={12} sm={12}>
+                  <Alert severity="error">{firebaseError}</Alert>
+                </Grid>
+              )}
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
@@ -291,8 +296,8 @@ export const SignUp = (props) => {
               loading={loading}
               type="submit"
               disabled={
-                validationErrors.firstName ||
-                validationErrors.lastName ||
+                validationErrors.firstName !== '' ||
+                validationErrors.lastName !== '' ||
                 validationErrors.email !== '' ||
                 validationErrors.password !== '' ||
                 validationErrors.confirmPassword !== '' ||

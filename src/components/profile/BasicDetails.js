@@ -37,7 +37,6 @@ const profileValidation = Yup.object({
 
 const BasicDetails = () => {
   const dispatch = useDispatch();
-  const [avatar, setAvatar] = useState('');
   const [image, setImage] = useState({ preview: '', raw: '' });
   const { userId, userData } = useSelector((state) => state.authStatus);
   const storage = getStorage();
@@ -50,10 +49,16 @@ const BasicDetails = () => {
         const url = await getDownloadURL(storageRef);
         setImage({ ...image, preview: url });
       } catch (error) {
-        setImage({ ...image, preview: '/Avatar.jpg' });
+        if (error.code === 'storage/invalid-url') {
+          const profilePath = userData.profileURL;
+          setImage({ ...image, preview: profilePath });
+        } else {
+          setImage({ ...image, preview: '/Avatar.jpg' });
+        }
       }
     };
     fetchProfilePic();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storage, userId, userData]);
 
   const initialValues = {
@@ -66,9 +71,23 @@ const BasicDetails = () => {
 
   const handleFileChange = (e) => {
     if (e.target.files.length) {
+      const rawImg = e.target.files[0];
       setImage({
-        preview: URL.createObjectURL(e.target.files[0]),
-        raw: e.target.files[0],
+        preview: URL.createObjectURL(rawImg),
+        raw: rawImg,
+      });
+
+      const formData = new FormData();
+      const imgType = rawImg.name.split('.').at(-1);
+      formData.append('image', rawImg);
+      const imgPath = `${userId}/profile.${imgType}`;
+      const storageRef = ref(storage, imgPath);
+      uploadBytes(storageRef, rawImg).then((snapshot) => {
+        userUpdate.mutate({
+          userId,
+          profileURL: imgPath,
+        });
+        console.log('Uploaded a blob or file!');
       });
     }
   };
@@ -141,9 +160,15 @@ const BasicDetails = () => {
             onChange={handleFileChange}
           />
           <br />
-          <Button variant="contained" onClick={handleFileUpload}>
-            {' '}
-            Update Image
+          <Button variant="outlined" component="label">
+            Upload Profile Pic
+            <input
+              type="file"
+              id="upload-button"
+              style={{ display: 'none' }}
+              accept="image/*"
+              onChange={handleFileChange}
+            />
           </Button>
         </Grid>
         <Grid container spacing={2}>

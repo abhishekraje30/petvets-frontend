@@ -31,7 +31,7 @@ export const getUserAPI = async (userId) => {
 
 export const getAllUsersAPI = async (role) => {
   try {
-    const { data } = await axiosClient.get(`/api/users?role=${role}`);
+    const { data } = await axiosClient.get(`/api/users/userrole?role=${role}`);
     return data;
   } catch (error) {
     console.log(error);

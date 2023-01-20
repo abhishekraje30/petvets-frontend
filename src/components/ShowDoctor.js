@@ -195,7 +195,7 @@ export const ShowDoctor = () => {
     e.preventDefault();
     const formFields = Object.keys(formData);
     let newFormValues = { ...formData };
-
+    console.log(newFormValues, formFields, e);
     for (let index = 0; index < formFields.length; index++) {
       const currentField = formFields[index];
       if (formData[currentField].error) {

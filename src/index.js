@@ -1,3 +1,4 @@
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { onAuthStateChanged } from 'firebase/auth';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -11,8 +12,8 @@ import { AppointmentHistory } from './components/AppointmentHistory';
 import Blog from './components/Blog';
 import { FindDoctor } from './components/FindDoctor';
 import { ForgotPassword } from './components/ForgotPassword';
-import { ShowDoctor } from './components/ShowDoctor';
 import { HomeContent } from './components/homeContent';
+import { ShowDoctor } from './components/ShowDoctor';
 import { SignIn } from './components/SignIn';
 import { SignUp } from './components/SignUp';
 import BlogDetail from './components/BlogDetail';
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
   { path: '/doctorSignUp', element: <SignUp role="doctor" /> },
   { path: '/signIn', element: <SignIn /> },
   { path: '/forgotPassword', element: <ForgotPassword /> },
+
   {
     path: '/',
     element: (
@@ -91,6 +93,14 @@ const router = createBrowserRouter([
       },
       {
         path: '/blogDetail',
+        element: (
+          <ProtectedRoute>
+            <BlogDetail />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/profile',
         element: (
           <ProtectedRoute>
             <BlogDetail />

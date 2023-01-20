@@ -161,7 +161,7 @@ export const FindDoctor = () => {
               </Card>
             </Grid>
           ))}
-        {doctor.length == 0 && (doctor || city) && (
+        {doctor.length === 0 && (doctor || city) && (
           <Typography variant="h4" component="h4">
             <span className="no-doctor">No Doctor found</span>
           </Typography>

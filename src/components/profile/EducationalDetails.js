@@ -53,10 +53,6 @@ const EducationalDetails = () => {
   const [expanded, setExpanded] = useState(false);
   const { userId, userData } = useSelector((state) => state.authStatus);
 
-  useEffect(() => {
-    setEducation(userData?.degree);
-  }, [userData]);
-
   const initialValues = {
     collegeName: '',
     specialization: '',
@@ -71,6 +67,17 @@ const EducationalDetails = () => {
     },
   });
 
+  useEffect(() => {
+    if (userData.degree === undefined) {
+      userUpdate.mutate({
+        userId,
+        degree: [],
+      });
+    } else {
+      setEducation([userData?.degree]);
+    }
+  }, [userData.degree, userId, userUpdate]);
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -79,7 +86,7 @@ const EducationalDetails = () => {
     initialValues: { ...initialValues },
     validationSchema: educationValidation,
     onSubmit: (values) => {
-      setEducation([...education, values]);
+      // setEducation([...education, values]);
       setOpen(false);
     },
   });
@@ -100,39 +107,41 @@ const EducationalDetails = () => {
         <Button variant="contained" onClick={() => setOpen(true)}>
           Add Education
         </Button>
-        {education.map((edu, index) => (
-          <Accordion
-            key={index}
-            expanded={expanded === 'panel1'}
-            onChange={handleChange('panel1')}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreOutlined />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
-            >
-              <div
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
+        {education.length
+          ? education.map((edu, index) => (
+              <Accordion
+                key={index}
+                expanded={expanded === 'panel1'}
+                onChange={handleChange('panel1')}
               >
-                <Typography>{edu.degree}</Typography>
-                <Typography>{edu.collegeName}</Typography>
-                <Typography>{edu.passingMarks}%</Typography>
-                <Typography>{edu.passingYear}</Typography>
-              </div>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
-                feugiat. Aliquam eget maximus est, id dignissim quam.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+                <AccordionSummary
+                  expandIcon={<ExpandMoreOutlined />}
+                  aria-controls="panel1bh-content"
+                  id="panel1bh-header"
+                >
+                  <div
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Typography>{edu.degree}</Typography>
+                    <Typography>{edu.collegeName}</Typography>
+                    <Typography>{edu.passingMarks}%</Typography>
+                    <Typography>{edu.passingYear}</Typography>
+                  </div>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
+                    feugiat. Aliquam eget maximus est, id dignissim quam.
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            ))
+          : null}
         <Dialog
           open={open}
           onClose={() => setOpen(false)}
