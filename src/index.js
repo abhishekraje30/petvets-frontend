@@ -22,7 +22,6 @@ import { auth } from './firebaseConfig';
 import './index.css';
 import { ProtectedRoute } from './ProtectedRoute';
 import { signin, signout } from './reducers/auth.reducer';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { store } from './store';
 
 export const queryClient = new QueryClient();

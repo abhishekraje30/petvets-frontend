@@ -21,7 +21,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../assets/images/Logo.png';
 import { auth } from '../firebaseConfig';
 import { signout } from '../reducers/auth.reducer';
-import Logo from '../assets/images/Logo.png';
 
 export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
