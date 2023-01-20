@@ -12,7 +12,7 @@ const BlogDetail = (props) => {
       const blogDetail = await axiosClient.get(
         'api/blogs/blogDetail?link=' + link
       );
-      setBlogData({ __html: blogDetail.data });
+      setBlogData({ __html: blogDetail.data[0] });
     };
     getBlogs();
   }, [link]);

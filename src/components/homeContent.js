@@ -4,7 +4,6 @@ import { cities } from '../utils/cities';
 import '../css/home.css';
 import image from '../assets/images/animal.jpg';
 import cowImage from '../assets/images/cow-custom.svg';
-import Blog from './Blog';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -16,11 +15,14 @@ import {
   Button,
   CardActionArea,
   Typography,
+  CardMedia,
+  CardActions,
 } from '@mui/material';
 
 export const HomeContent = () => {
   const [doctor, setDoctor] = React.useState([]);
   const [city, setCity] = React.useState([]);
+  const [blogData, setBlogData] = React.useState([]);
   const navigate = useNavigate();
   const category = [
     {
@@ -71,6 +73,21 @@ export const HomeContent = () => {
       );
       setDoctor(doctors.data);
     }
+  };
+
+  React.useEffect(() => {
+    const getBlogs = async () => {
+      const blogs = await axiosClient.get('api/blogs/');
+      setBlogData(blogs.data.slice(0, 3));
+    };
+    getBlogs();
+  }, []);
+
+  const goToBlog = (link) => {
+    navigate({
+      pathname: '/blogDetail',
+      search: '?link=' + link,
+    });
   };
 
   return (
@@ -157,7 +174,46 @@ export const HomeContent = () => {
             </Grid>
           ))}
         </Grid>
-        <Blog></Blog>
+        {/* <Blog></Blog> */}
+        <>
+          <Typography variant="h5" component="h2" class="blog-heading">
+            Our Blogs
+          </Typography>
+          <Typography variant="h3" component="h2" class="blog-subhead">
+            From Our Blog News
+          </Typography>
+        </>
+        <Grid container spacing={2} style={{ margin: '15px' }}>
+          {blogData.map((blog) => (
+            <Grid item xs={4}>
+              <Card
+                sx={{ maxWidth: 345, maxHeight: 450 }}
+                key="blog.title"
+                class="card"
+              >
+                <CardMedia sx={{ height: 140 }} image={blog.image} src="" />
+                <CardContent>
+                  <Typography variant="h6" color="text.secondary">
+                    {blog.title}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    {blog.article}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    style={{ marginLeft: 'auto', marginRight: 'auto' }}
+                    onClick={() => goToBlog(blog.link)}
+                  >
+                    Read More
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       </Card>
     </>
   );

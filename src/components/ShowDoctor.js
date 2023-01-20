@@ -80,19 +80,19 @@ export const ShowDoctor = () => {
     setBookNow(true);
   };
 
-  const disableWeekends = (date) => {
-    const day = date.$d.getDay();
-    if (doctor.constantDaysOff.length) {
-      return doctor.constantDaysOff.includes(day);
-    }
-    return [];
-  };
-
   const getBookedAppointments = (formattedDate) =>
     axiosClient
       .get(`api/appointments?vetId=${params.id}&date=${formattedDate}`)
       .then((res) => res.data)
       .catch((err) => err);
+
+  const disableWeekends = (date) => {
+    const day = date.$d.getDay();
+    if (doctor.clinicDaysOff.length) {
+      return doctor.clinicDaysOff.includes(day);
+    }
+    return [];
+  };
 
   const showSlots = async (date) => {
     const formattedDate = moment(date.$d).format('YYYY-MM-DD');
@@ -110,7 +110,6 @@ export const ShowDoctor = () => {
     }
 
     await getBookedAppointments(formattedDate).then((res) => {
-      console.log(res);
       setBookedSlots(res);
     });
   };
@@ -180,7 +179,6 @@ export const ShowDoctor = () => {
 
   const validateInput = (e) => {
     let { name, value } = e.target;
-    console.log(name, value, e);
     setFormData((prev) => {
       const stateObj = { ...prev };
 
@@ -189,7 +187,6 @@ export const ShowDoctor = () => {
       } else {
         stateObj[name].error = false;
       }
-      console.log(stateObj);
       return stateObj;
     });
   };
@@ -198,7 +195,7 @@ export const ShowDoctor = () => {
     e.preventDefault();
     const formFields = Object.keys(formData);
     let newFormValues = { ...formData };
-    console.log(newFormValues, formFields, e);
+
     for (let index = 0; index < formFields.length; index++) {
       const currentField = formFields[index];
       if (formData[currentField].error) {
@@ -258,8 +255,10 @@ export const ShowDoctor = () => {
             <Grid item xs={4}>
               <CardMedia
                 sx={{ height: 140 }}
-                image={doctor.image}
+                image={doctor.profileURL}
                 title={doctor.firstName}
+                alt="vet image"
+                src={doctor.profileURL}
               />
             </Grid>
             <Grid item xs={8}>

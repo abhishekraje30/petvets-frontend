@@ -50,19 +50,24 @@ export const AppointmentHistory = () => {
         appointments.map((app) => (
           <Card sx={{}} key="app._id" className="card">
             <CardContent>
-              <Grid container spacing={3}>
-                <Grid item xs={2} style={centerStyle}>
+              <Grid container spacing={2}>
+                <Grid item xs={1} style={centerStyle}>
                   <Typography gutterBottom variant="h5" component="div">
                     {app.bookingDate}
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
-                  <Typography gutterBottom variant="body2" component="div">
-                    {app.vetDetail.firstName} {app.vetDetail.lastName},{' '}
+                <Grid item xs={9}>
+                  <Typography
+                    gutterBottom
+                    variant="body2"
+                    component="div"
+                    style={{ fontWeight: '800' }}
+                  >
+                    Dr. {app.vetDetail.firstName} {app.vetDetail.lastName},
                     {app.vetDetail.clinicName}
                   </Typography>
                   <Typography gutterBottom variant="body2" component="div">
-                    {app.bookedSlot}
+                    Appointment time: {app.bookedSlot}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Booked for <b>{app.petName}</b> <br />

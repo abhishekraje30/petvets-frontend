@@ -1,4 +1,4 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Logo from '../assets/images/Logo.png';
 import { LoadingButton } from '@mui/lab';
 import {
   Alert,
@@ -171,15 +171,13 @@ export const SignUp = (props) => {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 3,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <img src={Logo} alt="logo" style={{ height: '80px' }} />
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>

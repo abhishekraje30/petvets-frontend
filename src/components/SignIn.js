@@ -1,4 +1,4 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Logo from '../assets/images/Logo.png';
 import {
   Avatar,
   Box,
@@ -55,9 +55,7 @@ export const SignIn = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <img src={Logo} alt="logo" style={{ height: '100px' }} />
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
