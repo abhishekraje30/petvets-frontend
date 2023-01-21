@@ -9,6 +9,7 @@ export const createUserAPI = async (userData) => {
 };
 
 export const updateUserProfileAPI = async (userData) => {
+  console.log(userData);
   try {
     const { data } = await axiosClient.put(
       `/api/users/${userData.userId}`,
