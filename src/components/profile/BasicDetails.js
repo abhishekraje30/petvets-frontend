@@ -81,19 +81,6 @@ const BasicDetails = ({ userId, userData }) => {
         preview: URL.createObjectURL(rawImg),
         raw: rawImg,
       });
-
-      const formData = new FormData();
-      const imgType = rawImg.name.split('.').at(-1);
-      formData.append('image', rawImg);
-      const imgPath = `${userId}/profile.${imgType}`;
-      const storageRef = ref(storage, imgPath);
-      uploadBytes(storageRef, rawImg).then((snapshot) => {
-        userUpdate.mutate({
-          userId,
-          profileURL: imgPath,
-        });
-        console.log('Uploaded a blob or file!');
-      });
     }
   };
 
@@ -114,6 +101,19 @@ const BasicDetails = ({ userId, userData }) => {
       userUpdate.mutate({
         userId,
         ...values,
+      });
+      const formData = new FormData();
+      const rawImg = image.raw;
+      const imgType = rawImg.name.split('.').at(-1);
+      formData.append('image', rawImg);
+      const imgPath = `${userId}/profile.${imgType}`;
+      const storageRef = ref(storage, imgPath);
+      uploadBytes(storageRef, rawImg).then((snapshot) => {
+        userUpdate.mutate({
+          userId,
+          profileURL: imgPath,
+        });
+        console.log('Uploaded a blob or file!');
       });
       setSnackbarMessage('User updated successfully');
       setOpen(true);
