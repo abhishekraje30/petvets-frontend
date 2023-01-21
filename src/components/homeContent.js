@@ -55,7 +55,7 @@ export const HomeContent = () => {
   ];
 
   const findDoctor = (name) => {
-    navigate('/findDoctor/?cat=' + name);
+    navigate('/findDoctor/?category=' + name);
   };
 
   const SearchCity = async (e) => {
@@ -77,16 +77,16 @@ export const HomeContent = () => {
 
   React.useEffect(() => {
     const getBlogs = async () => {
-      const blogs = await axiosClient.get('api/blogs/');
+      const blogs = await axiosClient.get('api/blogs/allBlogs');
       setBlogData(blogs.data.slice(0, 3));
     };
     getBlogs();
   }, []);
 
-  const goToBlog = (link) => {
+  const goToBlog = (blog) => {
     navigate({
       pathname: '/blogDetail',
-      search: '?link=' + link,
+      search: '?id=' + blog._id,
     });
   };
 
@@ -189,7 +189,7 @@ export const HomeContent = () => {
               <Card
                 sx={{ maxWidth: 345, maxHeight: 450 }}
                 key="blog.title"
-                class="card"
+                class="blog-card"
               >
                 <CardMedia sx={{ height: 140 }} image={blog.image} src="" />
                 <CardContent>
@@ -205,7 +205,7 @@ export const HomeContent = () => {
                     size="small"
                     variant="contained"
                     style={{ marginLeft: 'auto', marginRight: 'auto' }}
-                    onClick={() => goToBlog(blog.link)}
+                    onClick={() => goToBlog(blog)}
                   >
                     Read More
                   </Button>

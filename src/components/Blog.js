@@ -19,16 +19,16 @@ const Blog = () => {
 
   React.useEffect(() => {
     const getBlogs = async () => {
-      const blogs = await axiosClient.get('api/blogs/');
+      const blogs = await axiosClient.get('api/blogs/allBlogs');
       setBlogData(blogs.data);
     };
     getBlogs();
   }, []);
 
-  const goToBlog = (link) => {
+  const goToBlog = (blog) => {
     navigate({
       pathname: '/blogDetail',
-      search: '?link=' + link,
+      search: '?id=' + blog._id,
     });
   };
 
@@ -56,7 +56,7 @@ const Blog = () => {
                   size="small"
                   variant="contained"
                   style={{ marginLeft: 'auto', marginRight: 'auto' }}
-                  onClick={() => goToBlog(blog.link)}
+                  onClick={() => goToBlog(blog)}
                 >
                   Read More
                 </Button>

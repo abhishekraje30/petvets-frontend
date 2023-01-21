@@ -5,17 +5,20 @@ import axiosClient from '../api-client';
 const BlogDetail = (props) => {
   const [params] = useSearchParams();
   const [blogData, setBlogData] = React.useState({ __html: '' });
-  const link = params.get('link');
+  const id = params.get('id');
 
   React.useEffect(() => {
-    const getBlogs = async () => {
-      const blogDetail = await axiosClient.get(
-        'api/blogs/blogDetail?link=' + link
-      );
-      setBlogData({ __html: blogDetail.data[0] });
+    const getBlog = async () => {
+      await axiosClient.get('api/blogs/allBlogs/' + id).then(async (detail) => {
+        await axiosClient
+          .get('api/blogs/blogDetail?link=' + detail.data.link)
+          .then((blogDetail) => {
+            setBlogData({ __html: blogDetail.data[0] });
+          });
+      });
     };
-    getBlogs();
-  }, [link]);
+    getBlog();
+  }, [id]);
 
   return <div dangerouslySetInnerHTML={blogData} />;
 };

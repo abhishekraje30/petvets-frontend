@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../api-client';
 
-import { cities } from '../utils/cities';
+import { cities } from '../utils/cities.js';
 import {
   Typography,
   Card,
@@ -13,63 +13,92 @@ import {
   TextField,
   Autocomplete,
   Grid,
+  Skeleton,
+  Box,
 } from '@mui/material';
 
 import '../css/findDoctor.css';
-// import notFoundImage from '../assets/images/notFound.jpeg';
 
 export const FindDoctor = () => {
   const [doctor, setDoctor] = React.useState([]);
-  const [city, setCity] = React.useState([]);
-  const [searchedDoctor, setSearchedDoctor] = React.useState([]);
-  const [searchedCity, setSearchedCity] = React.useState([]);
+  const [searchedDoctor, setSearchedDoctor] = React.useState(null);
+  const [searchedCity, setSearchedCity] = React.useState(null);
   const navigate = useNavigate();
 
-  const searchDoctor = async (e) => {
-    if (e.code === 'Enter' && e.target.value !== '') {
-      const doctors = await axiosClient.get(
-        'es/results?doctor=' + e.target.value
-      );
-      setDoctor(doctors.data);
-    }
+  const queryParameters = new URLSearchParams(window.location.search);
+  const category = queryParameters.get('category');
+
+  const flatProps = {
+    options: cities,
+    getOptionLabel: (option) => option.name,
   };
 
-  const SearchCity = async (e) => {
-    if (e.code === 'Enter' && e.target.value !== '') {
-      const city = cities.filter((x) =>
-        x.toLowerCase().includes(e.target.value.toLowerCase())
-      );
-      setCity(city);
-    }
+  const doctorList = {
+    options: doctor,
+    getOptionLabel: (option) => option.firstName,
   };
 
   const findDoctor = async () => {
     let doctors = {};
-    if (searchedDoctor && searchedDoctor) {
+    if (searchedDoctor && searchedCity) {
       doctors = await axiosClient.get(
-        `es/results?doctor=${searchedDoctor}&city=${searchedCity}`
+        `es/results?doctor=${searchedDoctor.firstName}&city=${searchedCity.name}`
       );
-    }
-    if (searchedDoctor && !searchedCity) {
-      doctors = await axiosClient.get('es/results?doctor=' + searchedDoctor);
-    }
-    if (searchedCity && !searchedDoctor) {
-      doctors = await axiosClient.get('es/results?city=' + searchedCity);
+    } else if (searchedDoctor && !searchedCity) {
+      doctors = await axiosClient.get(
+        'es/results?doctor=' + searchedDoctor.firstName
+      );
+    } else if (searchedCity && !searchedDoctor) {
+      doctors = await axiosClient.get('es/results?city=' + searchedCity.name);
+    } else {
+      doctors = await axiosClient.get('api/users?role=doctor');
     }
     setDoctor(doctors.data);
   };
 
+  // React.useEffect(() => {
+  //   const getDoctor = async () => {
+  //     const doctors = await axiosClient.get('api/users?role=doctor');
+  //     setDoctor(doctors.data);
+  //   };
+  //   getDoctor();
+  // }, []);
+
   React.useEffect(() => {
     const getDoctor = async () => {
-      const doctors = await axiosClient.get('api/users?role=doctor');
+      let doctors = [];
+      if (category) {
+        doctors = await axiosClient.get(`es/results?category=${category}`);
+      } else {
+        doctors = await axiosClient.get('api/users?role=doctor');
+      }
       setDoctor(doctors.data);
     };
     getDoctor();
-  }, []);
+  }, [category]);
 
   const showDoctor = (id) => {
     navigate('/findDoctor/' + id);
   };
+
+  const SkeletonLoading = () => (
+    <Box sx={{ p: 1 }}>
+      <Typography variant="h4">
+        <Skeleton width="30%" />
+      </Typography>
+      <Grid container wrap="nowrap">
+        {Array.from(new Array(3)).map((item, index) => (
+          <Box key={index} sx={{ width: 210, marginRight: 1, my: 2 }}>
+            <Skeleton variant="rectangular" width={210} height={118} />
+            <Box sx={{ pt: 0.5 }}>
+              <Skeleton />
+              <Skeleton width="60%" />
+            </Box>
+          </Box>
+        ))}
+      </Grid>
+    </Box>
+  );
 
   return (
     <>
@@ -78,41 +107,32 @@ export const FindDoctor = () => {
           <Grid container spacing={0}>
             <Grid item xs={6}>
               <Autocomplete
-                className="input-field"
-                freeSolo
+                {...doctorList}
+                id="auto-complete"
                 autoComplete
-                autoHighlight
-                options={
-                  doctor.length ? doctor.map((doc) => doc.firstName) : []
-                }
+                includeInputInList
+                value={searchedDoctor}
+                onChange={(event, newValue) => {
+                  setSearchedDoctor(newValue);
+                }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="Find Doctor"
-                    value={searchedDoctor}
-                    onChange={() => setSearchedDoctor(searchDoctor)}
-                  />
+                  <TextField {...params} variant="outlined" label="Doctor" />
                 )}
               />
             </Grid>
             <Grid item xs={4}>
               <Autocomplete
-                className="input-field"
-                freeSolo
+                {...flatProps}
+                id="auto-complete"
                 autoComplete
-                autoHighlight
+                includeInputInList
+                value={searchedCity}
+                onChange={(event, newValue) => {
+                  setSearchedCity(newValue);
+                }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="City"
-                    value={searchedCity}
-                    onChange={() => setSearchedCity(searchedCity)}
-                  />
+                  <TextField {...params} variant="outlined" label="City" />
                 )}
-                options={city.map((c) => c)}
-                onKeyDown={(e) => SearchCity(e)}
               />
             </Grid>
             <Grid item xs={2}>
@@ -128,6 +148,11 @@ export const FindDoctor = () => {
           </Grid>
         </CardContent>
       </Card>
+      {!doctor && (
+        <Box>
+          <SkeletonLoading />
+        </Box>
+      )}
       <Grid container spacing={2} style={{ marginTop: '10px' }}>
         {doctor.length &&
           doctor.map((doc) => (
@@ -161,7 +186,7 @@ export const FindDoctor = () => {
               </Card>
             </Grid>
           ))}
-        {doctor.length === 0 && (doctor || city) && (
+        {!doctor.length && (searchedDoctor || searchedCity || category) && (
           <Typography variant="h4" component="h4">
             <span className="no-doctor">No Doctor found</span>
           </Typography>

@@ -187,6 +187,16 @@ export const ShowDoctor = () => {
       } else {
         stateObj[name].error = false;
       }
+      if (name === 'petAge' && value > 15) {
+        stateObj[name].error = true;
+        stateObj[name].errorMessage = 'Please enter a valid age';
+      } else if (name === 'contact') {
+        let expr = /^(0|91)?[6-9][0-9]{9}$/;
+        if (!expr.test(value)) {
+          stateObj[name].error = true;
+          stateObj[name].errorMessage = 'Invalid Mobile Number.';
+        }
+      }
       return stateObj;
     });
   };
@@ -195,7 +205,6 @@ export const ShowDoctor = () => {
     e.preventDefault();
     const formFields = Object.keys(formData);
     let newFormValues = { ...formData };
-    console.log(newFormValues, formFields, e);
     for (let index = 0; index < formFields.length; index++) {
       const currentField = formFields[index];
       if (formData[currentField].error) {
@@ -383,6 +392,7 @@ export const ShowDoctor = () => {
                   name="petAge"
                   label="Pet's Age"
                   required
+                  type="number"
                   onChange={handleChange}
                   onBlur={validateInput}
                   value={formData.petAge.value}
@@ -445,7 +455,14 @@ export const ShowDoctor = () => {
             {activeStep < 2 && (
               <Button
                 onClick={activeStep === 0 ? handleNext : handleSubmit}
-                disabled={activeStep === 0 && !selectedSlot}
+                disabled={
+                  (activeStep === 0 && !selectedSlot) ||
+                  (activeStep === 1 &&
+                    (!formData.name.value ||
+                      !formData.petName.value ||
+                      !formData.petAge.value ||
+                      !formData.contact.value))
+                }
               >
                 Next
               </Button>
