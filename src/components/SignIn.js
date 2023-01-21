@@ -2,6 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import {
   Alert,
   Box,
+  Button,
   Checkbox,
   Container,
   CssBaseline,
@@ -68,6 +69,67 @@ export const SignIn = () => {
 
       return stateObj;
     });
+  };
+
+  const dummyLogin = async (role) => {
+    if (role === 'admin') {
+      try {
+        setLoading(true);
+        await signInWithEmailAndPassword(
+          auth,
+          'fgoscar6q@ft.com',
+          'Jm3JylHy82'
+        );
+        setLoading(false);
+        setRedirect(true);
+      } catch (error) {
+        const errorCode = error.code;
+        if (error.code === 'auth/wrong-password')
+          setFirebaseError('Please enter correct password');
+        if (error.code === 'auth/user-not-found')
+          setFirebaseError('User is not registered');
+        console.log(errorCode);
+        setLoading(false);
+      }
+    } else if (role === 'doctor') {
+      try {
+        setLoading(true);
+        await signInWithEmailAndPassword(
+          auth,
+          'hwoodham97@com.com',
+          'l6tY1oRl8q'
+        );
+        setLoading(false);
+        setRedirect(true);
+      } catch (error) {
+        const errorCode = error.code;
+        if (error.code === 'auth/wrong-password')
+          setFirebaseError('Please enter correct password');
+        if (error.code === 'auth/user-not-found')
+          setFirebaseError('User is not registered');
+        console.log(errorCode);
+        setLoading(false);
+      }
+    } else {
+      try {
+        setLoading(true);
+        await signInWithEmailAndPassword(
+          auth,
+          'cleancd@oaic.gov.au',
+          'qSSG1FA9R'
+        );
+        setLoading(false);
+        setRedirect(true);
+      } catch (error) {
+        const errorCode = error.code;
+        if (error.code === 'auth/wrong-password')
+          setFirebaseError('Please enter correct password');
+        if (error.code === 'auth/user-not-found')
+          setFirebaseError('User is not registered');
+        console.log(errorCode);
+        setLoading(false);
+      }
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -189,7 +251,40 @@ export const SignIn = () => {
               </Grid>
             </Grid>
           </Box>
+          <br />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: '100%',
+              gap: 2,
+              justifyContent: 'space-between',
+            }}
+          >
+            <Button
+              onClick={() => dummyLogin('user')}
+              variant="contained"
+              color="primary"
+            >
+              User
+            </Button>
+            <Button
+              onClick={() => dummyLogin('doctor')}
+              variant="contained"
+              color="primary"
+            >
+              Doctor
+            </Button>
+            <Button
+              onClick={() => dummyLogin('admin')}
+              variant="contained"
+              color="primary"
+            >
+              Admin
+            </Button>
+          </div>
         </Box>
+
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
