@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../api-client';
+import { SearchBar } from './SearchBar';
 
-import { cities } from '../utils/cities.js';
 import {
   Typography,
   Card,
@@ -10,8 +10,6 @@ import {
   CardContent,
   CardMedia,
   Button,
-  TextField,
-  Autocomplete,
   Grid,
   Skeleton,
   Box,
@@ -21,28 +19,18 @@ import '../css/findDoctor.css';
 
 export const FindDoctor = () => {
   const [doctor, setDoctor] = React.useState([]);
-  const [searchedDoctor, setSearchedDoctor] = React.useState(null);
-  const [searchedCity, setSearchedCity] = React.useState(null);
   const navigate = useNavigate();
 
   const queryParameters = new URLSearchParams(window.location.search);
   const category = queryParameters.get('category');
+  const doctorParam = queryParameters.get('doctor');
+  const cityParam = queryParameters.get('city');
 
-  const flatProps = {
-    options: cities,
-    getOptionLabel: (option) => option.name,
-  };
-
-  const doctorList = {
-    options: doctor,
-    getOptionLabel: (option) => option.firstName,
-  };
-
-  const findDoctor = async () => {
+  const findDoctor = async (searchedDoctor, searchedCity) => {
     let doctors = {};
     if (searchedDoctor && searchedCity) {
       doctors = await axiosClient.get(
-        `es/results?doctor=${searchedDoctor.firstName}&city=${searchedCity.name}`
+        `es/results?doctor=${searchedDoctor}&city=${searchedCity.name}`
       );
     } else if (searchedDoctor && !searchedCity) {
       doctors = await axiosClient.get(
@@ -56,26 +44,26 @@ export const FindDoctor = () => {
     setDoctor(doctors.data);
   };
 
-  // React.useEffect(() => {
-  //   const getDoctor = async () => {
-  //     const doctors = await axiosClient.get('api/users?role=doctor');
-  //     setDoctor(doctors.data);
-  //   };
-  //   getDoctor();
-  // }, []);
-
   React.useEffect(() => {
     const getDoctor = async () => {
       let doctors = [];
       if (category) {
         doctors = await axiosClient.get(`es/results?category=${category}`);
+      } else if (doctorParam && !cityParam) {
+        doctors = await axiosClient.get(`es/results?doctor=${doctorParam}`);
+      } else if (cityParam && !doctorParam) {
+        doctors = await axiosClient.get(`es/results?city=${cityParam}`);
+      } else if (cityParam && doctorParam) {
+        doctors = await axiosClient.get(
+          `es/results?city=${cityParam}&doctor=${doctorParam}`
+        );
       } else {
         doctors = await axiosClient.get('api/users?role=doctor');
       }
       setDoctor(doctors.data);
     };
     getDoctor();
-  }, [category]);
+  }, [category, cityParam, doctorParam]);
 
   const showDoctor = (id) => {
     navigate('/findDoctor/' + id);
@@ -103,50 +91,11 @@ export const FindDoctor = () => {
   return (
     <>
       <Card sx={{ display: 'flex' }} className="card-pos">
-        <CardContent sx={{ flex: '1 0 auto' }}>
-          <Grid container spacing={0}>
-            <Grid item xs={6}>
-              <Autocomplete
-                {...doctorList}
-                id="auto-complete"
-                autoComplete
-                includeInputInList
-                value={searchedDoctor}
-                onChange={(event, newValue) => {
-                  setSearchedDoctor(newValue);
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} variant="outlined" label="Doctor" />
-                )}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Autocomplete
-                {...flatProps}
-                id="auto-complete"
-                autoComplete
-                includeInputInList
-                value={searchedCity}
-                onChange={(event, newValue) => {
-                  setSearchedCity(newValue);
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} variant="outlined" label="City" />
-                )}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <Button
-                size="small"
-                variant="contained"
-                className="search-btn"
-                onClick={findDoctor}
-              >
-                Find Now
-              </Button>
-            </Grid>
-          </Grid>
-        </CardContent>
+        <SearchBar
+          findDoctor={findDoctor}
+          doctorParam={doctorParam}
+          cityParam={cityParam}
+        />
       </Card>
       {!doctor && (
         <Box>
@@ -154,12 +103,12 @@ export const FindDoctor = () => {
         </Box>
       )}
       <Grid container spacing={2} style={{ marginTop: '10px' }}>
-        {doctor.length &&
+        {doctor.length ? (
           doctor.map((doc) => (
             <Grid item xs={4} key={doc.userId}>
               <Card sx={{ maxWidth: 345 }} key="doc._id" className="card">
                 <CardMedia
-                  sx={{ height: 140 }}
+                  sx={{ height: 200, objectFit: 'contain' }}
                   image={doc.profileURL}
                   title={doc.firstName}
                 />
@@ -185,8 +134,8 @@ export const FindDoctor = () => {
                 </CardActions>
               </Card>
             </Grid>
-          ))}
-        {!doctor.length && (searchedDoctor || searchedCity || category) && (
+          ))
+        ) : (
           <Typography variant="h4" component="h4">
             <span className="no-doctor">No Doctor found</span>
           </Typography>

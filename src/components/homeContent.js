@@ -1,17 +1,15 @@
 import React from 'react';
 import axiosClient from '../api-client';
-import { cities } from '../utils/cities';
 import '../css/home.css';
 import image from '../assets/images/animal.jpg';
 import cowImage from '../assets/images/cow-custom.svg';
 import { useNavigate } from 'react-router-dom';
+import { SearchBar } from './SearchBar';
 import {
   Box,
   Card,
   CardContent,
   Grid,
-  Autocomplete,
-  TextField,
   Button,
   CardActionArea,
   Typography,
@@ -20,8 +18,6 @@ import {
 } from '@mui/material';
 
 export const HomeContent = () => {
-  const [doctor, setDoctor] = React.useState([]);
-  const [city, setCity] = React.useState([]);
   const [blogData, setBlogData] = React.useState([]);
   const navigate = useNavigate();
   const category = [
@@ -54,25 +50,19 @@ export const HomeContent = () => {
     },
   ];
 
-  const findDoctor = (name) => {
-    navigate('/findDoctor/?category=' + name);
+  const searchDoctor = (searchedDoctor, searchedCity) => {
+    if (searchedDoctor && !searchedCity)
+      navigate(`/findDoctor?doctor=${searchedDoctor.firstName}`);
+    else if (!searchedDoctor && searchedCity)
+      navigate(`/findDoctor?city=${searchedCity.name}`);
+    else
+      navigate(
+        `/findDoctor?doctor=${searchedDoctor.firstName}&city=${searchedCity.name}`
+      );
   };
 
-  const SearchCity = async (e) => {
-    if (e.code === 'Enter') {
-      const city = cities.filter((x) =>
-        x.toLowerCase().includes(e.target.value.toLowerCase())
-      );
-      setCity(city);
-    }
-  };
-  const searchDoctor = async (e) => {
-    if (e.code === 'Enter') {
-      const doctors = await axiosClient.get(
-        'es/results?doctor=' + e.target.value
-      );
-      setDoctor(doctors.data);
-    }
+  const findDoctor = (name) => {
+    navigate('/findDoctor/?category=' + name);
   };
 
   React.useEffect(() => {
@@ -101,47 +91,7 @@ export const HomeContent = () => {
       </div>
       <Card sx={{ display: 'flex' }} class="banner-card">
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <CardContent sx={{ flex: '1 0 auto' }}>
-            <Grid container spacing={0}>
-              <Grid item xs={6}>
-                <Autocomplete
-                  className="input"
-                  freeSolo
-                  autoComplete
-                  autoHighlight
-                  options={
-                    doctor.length ? doctor.map((doc) => doc.firstName) : []
-                  }
-                  onKeyDown={(e) => searchDoctor(e)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      label="Find Doctor"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Autocomplete
-                  className="input"
-                  freeSolo
-                  autoComplete
-                  autoHighlight
-                  renderInput={(params) => (
-                    <TextField {...params} variant="outlined" label="City" />
-                  )}
-                  options={city.map((c) => c)}
-                  onKeyDown={(e) => SearchCity(e)}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <Button size="small" variant="contained" className="search-btn">
-                  Find Now
-                </Button>
-              </Grid>
-            </Grid>
-          </CardContent>
+          <SearchBar navigate={true} findDoctor={searchDoctor} />
         </Box>
         <Grid
           container
@@ -174,7 +124,6 @@ export const HomeContent = () => {
             </Grid>
           ))}
         </Grid>
-        {/* <Blog></Blog> */}
         <>
           <Typography variant="h5" component="h2" class="blog-heading">
             Our Blogs
