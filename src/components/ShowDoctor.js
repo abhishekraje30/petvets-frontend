@@ -267,7 +267,6 @@ export const ShowDoctor = () => {
                 image={doctor.profileURL}
                 title={doctor.firstName}
                 alt="vet image"
-                src={doctor.profileURL}
               />
             </Grid>
             <Grid item xs={8}>
