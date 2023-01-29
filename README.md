@@ -1,7 +1,7 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/3a60744f-678f-4f08-a360-7d2e2dcb6560/deploy-status)](https://app.netlify.com/sites/pesto-n8-dbacs/deploys)
 
-# petvets-frontend
+# petvet
 
 ![White and Blue Pet House Logo Design](https://user-images.githubusercontent.com/44527232/215319369-2cc0379f-c96d-4187-9704-098cd24a175a.png)
 
@@ -52,7 +52,9 @@ We tried to use a completely modern tech stack while testing out some new techno
 - [Redux toolkit](https://redux-toolkit.js.org/)
 - [Axios](https://axios-http.com/docs/intro)
 - [React Query](https://react-query.tanstack.com/)
-- React Material UI (https://mui.com/)
+- [React Material UI] (https://mui.com/)
+- [ElasticSearch] (https://www.elastic.co/)
+- [Cheerio] (https://www.npmjs.com/package/cheerio)
 
 <br/>
 
