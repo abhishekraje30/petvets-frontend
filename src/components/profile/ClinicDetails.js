@@ -287,7 +287,6 @@ const ClinicDetails = () => {
               onBlur={formik.handleBlur}
               value={formik.values.about}
               error={formik.touched.about && Boolean(formik.errors.about)}
-              helperText={formik.touched.about && formik.errors.about}
             />
             <small style={{ color: 'red' }}>
               {formik.touched.about && formik.errors.about}*
