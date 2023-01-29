@@ -18,7 +18,6 @@ import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Logo from '../assets/images/Logo.png';
 import { auth } from '../firebaseConfig';
-import { Copyright } from '../MuiComponents/Copyright';
 
 const theme = createTheme();
 
@@ -284,7 +283,6 @@ export const SignIn = () => {
             </Button>
           </div>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

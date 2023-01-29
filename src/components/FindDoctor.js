@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../api-client';
 import { SearchBar } from './SearchBar';
-
+import { Copyright } from '../MuiComponents/Copyright';
 import {
   Typography,
   Card,
@@ -13,12 +13,14 @@ import {
   Grid,
   Skeleton,
   Box,
+  Pagination,
 } from '@mui/material';
 
 import '../css/findDoctor.css';
 
 export const FindDoctor = () => {
   const [doctor, setDoctor] = React.useState([]);
+  const [totalPages, setTotalPages] = React.useState(0);
   const navigate = useNavigate();
 
   const queryParameters = new URLSearchParams(window.location.search);
@@ -39,9 +41,12 @@ export const FindDoctor = () => {
     } else if (searchedCity && !searchedDoctor) {
       doctors = await axiosClient.get('es/results?city=' + searchedCity.name);
     } else {
-      doctors = await axiosClient.get('api/users?role=doctor');
+      doctors = await axiosClient.get(
+        'api/users?role=doctor&pageSize=9&page=0'
+      );
     }
-    setDoctor(doctors.data);
+    setDoctor(doctors.data.user);
+    setTotalPages(doctors.data.totalPages);
   };
 
   React.useEffect(() => {
@@ -58,9 +63,12 @@ export const FindDoctor = () => {
           `es/results?city=${cityParam}&doctor=${doctorParam}`
         );
       } else {
-        doctors = await axiosClient.get('api/users?role=doctor');
+        doctors = await axiosClient.get(
+          'api/users?role=doctor&pageSize=9&page=0'
+        );
       }
-      setDoctor(doctors.data);
+      setDoctor(doctors.data.user);
+      setTotalPages(doctors.data.totalPages);
     };
     getDoctor();
   }, [category, cityParam, doctorParam]);
@@ -87,6 +95,13 @@ export const FindDoctor = () => {
       </Grid>
     </Box>
   );
+
+  const changePage = async (event, pageNo) => {
+    const doctors = await axiosClient.get(
+      `api/users?role=doctor&pageSize=9&page=${pageNo - 1}`
+    );
+    setDoctor(doctors.data.user);
+  };
 
   return (
     <>
@@ -151,6 +166,17 @@ export const FindDoctor = () => {
           </Typography>
         )}
       </Grid>
+      {totalPages ? (
+        <Pagination
+          color="primary"
+          onChange={changePage}
+          count={totalPages}
+          style={{ margin: '20px' }}
+        />
+      ) : (
+        ''
+      )}
+      <Copyright />
     </>
   );
 };

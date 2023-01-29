@@ -20,7 +20,6 @@ import { Navigate } from 'react-router-dom';
 import { createUserAPI } from '../actions/users.actions';
 import Logo from '../assets/images/Logo.png';
 import { auth } from '../firebaseConfig';
-import { Copyright } from '../MuiComponents/Copyright';
 import { fetchUser } from '../reducers/auth.reducer';
 
 const theme = createTheme();
@@ -325,8 +324,6 @@ export const SignUp = (props) => {
             </Grid>
           </Box>
         </Box>
-
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

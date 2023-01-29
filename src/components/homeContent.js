@@ -1,11 +1,15 @@
 import React from 'react';
 import axiosClient from '../api-client';
 import '../css/home.css';
-import image from '../assets/images/animal.jpg';
-import cowImage from '../assets/images/cow-custom.svg';
+import image from '../assets/images/banner.png';
 import { useNavigate } from 'react-router-dom';
 import { SearchBar } from './SearchBar';
 import { Copyright } from '../MuiComponents/Copyright';
+import dogImage from '../assets/images/dog.jpg';
+import catImage from '../assets/images/cat.jpg';
+import cowImage from '../assets/images/cow.jpg';
+import birdImage from '../assets/images/bird.jpg';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import {
   Box,
   Card,
@@ -18,36 +22,44 @@ import {
   CardActions,
 } from '@mui/material';
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    blogCard: {
+      maxHeight: '450px',
+      height: '450px',
+      margin: '10px',
+      boxShadow: '0 4px 8px 0 rgb(0 0 0 / 20%)',
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexDirection: 'column',
+    },
+  })
+);
+
 export const HomeContent = () => {
   const [blogData, setBlogData] = React.useState([]);
   const navigate = useNavigate();
+  const classes = useStyles();
   const category = [
     {
       id: 1,
       name: 'dog',
-      icon: <i className="fas fa-dog icon"></i>,
+      icon: <img src={dogImage} alt="dog" className="icon-img" />,
     },
     {
       id: 2,
       name: 'cat',
-      icon: <i className="fas fa-cat icon"></i>,
+      icon: <img src={catImage} alt="dog" className="icon-img" />,
     },
     {
       id: 3,
       name: 'bird',
-      icon: <i className="fas fa-dove icon"></i>,
+      icon: <img src={birdImage} alt="dog" className="icon-img" />,
     },
     {
       id: 4,
       name: 'cattle',
-      icon: (
-        <img
-          src={cowImage}
-          className="icon"
-          style={{ height: '100px' }}
-          alt="cow"
-        />
-      ),
+      icon: <img src={cowImage} className="icon-img" alt="cow" />,
     },
   ];
 
@@ -85,29 +97,31 @@ export const HomeContent = () => {
     <>
       <div className="home-banner">
         <img src={image} alt="" className="banner-img" />
-        <div className="banner__content">
+        {/* <div className="banner__content">
           <h1 className="banner-text">Find the best</h1>
           <h1 className="banner-text">vet near by you</h1>
-        </div>
+        </div> */}
       </div>
-      <Card sx={{ display: 'flex' }} class="banner-card">
+      <Card class="banner-card">
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <SearchBar navigate={true} findDoctor={searchDoctor} />
         </Box>
+        <Typography variant="h5" component="h2" class="blog-heading">
+          Choose your pet
+        </Typography>
         <Grid
           container
-          spacing={2}
+          spacing={1}
           direction="row"
           justify="flex-start"
           alignItems="flex-start"
-          marginTop="5%"
+          class="category-grid"
         >
           {category.map((cat) => (
             <Grid item xs={12} sm={6} md={3} key={cat.id}>
               <Card
                 sx={{ maxWidth: 245 }}
-                className="card"
-                style={{ backgroundColor: 'white' }}
+                className="category-card"
                 onClick={() => findDoctor(cat.name)}
               >
                 <CardActionArea>
@@ -135,11 +149,11 @@ export const HomeContent = () => {
         </>
         <Grid container spacing={2} style={{ margin: '15px' }}>
           {blogData.map((blog) => (
-            <Grid item xs={4}>
+            <Grid item xs={12} md={4}>
               <Card
                 sx={{ maxWidth: 345, maxHeight: 450 }}
                 key="blog._id"
-                class="blog-card"
+                className={classes.blogCard}
               >
                 <CardMedia sx={{ height: 140 }} image={blog.image} src="" />
                 <CardContent>
@@ -164,6 +178,7 @@ export const HomeContent = () => {
             </Grid>
           ))}
         </Grid>
+        <Copyright />
       </Card>
     </>
   );

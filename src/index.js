@@ -28,7 +28,7 @@ export const queryClient = new QueryClient();
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#42a5f5',
+      main: '#60a5dd',
       contrastText: 'white',
     },
   },

@@ -25,8 +25,10 @@ export const SearchBar = (props) => {
 
   React.useEffect(() => {
     const getDoctor = async () => {
-      const doctors = await axiosClient.get('api/users?role=doctor');
-      setDoctor(doctors.data);
+      const doctors = await axiosClient.get(
+        'api/users?role=doctor&pageSize=9&page=0'
+      );
+      setDoctor(doctors.data.user);
     };
     if (props.doctorParam) {
       setSearchedDoctor({ firstName: props.doctorParam });
