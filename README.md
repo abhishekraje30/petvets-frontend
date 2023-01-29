@@ -1,14 +1,14 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/3a60744f-678f-4f08-a360-7d2e2dcb6560/deploy-status)](https://app.netlify.com/sites/pesto-n8-dbacs/deploys)
 
-# petvet
+# PetVet
 
 ![White and Blue Pet House Logo Design](https://user-images.githubusercontent.com/44527232/215319369-2cc0379f-c96d-4187-9704-098cd24a175a.png)
 
 
-PetVet helps pet owners to book an appointment for their pet. Many people have pets in their home and there is no platform available in the market where people can see nearby veterinary doctors. Our platform will enable people to book an appointment with veterinary doctors
+PetVet helps pet owners to book an appointment for their pet. Many people have pets in their home and there is no platform available in the market where people can see nearby veterinary doctors. Our platform will enable people to book an appointment with veterinary doctors.
 <br/>
-
+Users can also read the blogs & can cancel the appointment through contacting the clinic.
 
 <br/>
 
@@ -33,7 +33,6 @@ Please Note:
 1. We recommend using this app in Google Chrome
 2. Use the app on Laptop/desktop only as of now.
 
-<br/>
 
 <br/>
 
@@ -52,9 +51,9 @@ We tried to use a completely modern tech stack while testing out some new techno
 - [Redux toolkit](https://redux-toolkit.js.org/)
 - [Axios](https://axios-http.com/docs/intro)
 - [React Query](https://react-query.tanstack.com/)
-- [React Material UI] (https://mui.com/)
-- [ElasticSearch] (https://www.elastic.co/)
-- [Cheerio] (https://www.npmjs.com/package/cheerio)
+- [React Material UI](https://mui.com/)
+- [ElasticSearch](https://www.elastic.co/)
+- [Cheerio](https://www.npmjs.com/package/cheerio)
 
 <br/>
 
