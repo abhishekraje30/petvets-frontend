@@ -86,10 +86,10 @@ export const HomeContent = () => {
     getBlogs();
   }, []);
 
-  const goToBlog = (blog) => {
+  const goToBlog = (readBlog) => {
     navigate({
       pathname: '/blogDetail',
-      search: '?id=' + blog._id,
+      search: '?id=' + readBlog._id,
     });
   };
 
@@ -97,10 +97,6 @@ export const HomeContent = () => {
     <>
       <div className="home-banner">
         <img src={image} alt="" className="banner-img" />
-        {/* <div className="banner__content">
-          <h1 className="banner-text">Find the best</h1>
-          <h1 className="banner-text">vet near by you</h1>
-        </div> */}
       </div>
       <Card class="banner-card">
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -149,10 +145,9 @@ export const HomeContent = () => {
         </>
         <Grid container spacing={2} style={{ margin: '15px' }}>
           {blogData.map((blog) => (
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} key="blog._id">
               <Card
                 sx={{ maxWidth: 345, maxHeight: 450 }}
-                key="blog._id"
                 className={classes.blogCard}
               >
                 <CardMedia sx={{ height: 140 }} image={blog.image} src="" />

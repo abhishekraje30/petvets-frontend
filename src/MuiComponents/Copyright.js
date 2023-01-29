@@ -8,7 +8,13 @@ export const Copyright = (props) => (
     color="text.secondary"
     align="center"
     {...props}
-    style={{ background: '#60a5dd', color: 'white', width: '100%' }}
+    style={{
+      background: '#60a5dd',
+      color: 'white',
+      width: '100%',
+      position: 'relative',
+      bottom: '0',
+    }}
   >
     {'Copyright © '}
     <Link color="inherit" href="/">

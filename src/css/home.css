@@ -9,15 +9,6 @@
     display: inline-block;
 }
 
-/* .home-banner:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 40rem;
-    background-color: rgba(66, 165, 245, 0.4);
-} */
-
 .banner__content {
 
     font-family: "Heebo", sans-serif;

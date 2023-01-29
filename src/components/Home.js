@@ -8,7 +8,6 @@ import { AppointmentHistory } from './AppointmentHistory';
 import { HomeContent } from './homeContent';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
-import { Copyright } from '../MuiComponents/Copyright';
 
 export const Home = () => {
   const { userData } = useSelector((state) => state.authStatus);

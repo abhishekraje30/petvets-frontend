@@ -1,6 +1,6 @@
 import React from 'react';
-import BlogDetail from './BlogDetail';
 import { useNavigate } from 'react-router-dom';
+import { Copyright } from '../MuiComponents/Copyright';
 import axiosClient from '../api-client';
 import '../css/blog.css';
 import {
@@ -25,10 +25,10 @@ const Blog = () => {
     getBlogs();
   }, []);
 
-  const goToBlog = (blog) => {
+  const goToBlog = (readBlog) => {
     navigate({
       pathname: '/blogDetail',
-      search: '?id=' + blog._id,
+      search: '?id=' + readBlog._id,
     });
   };
 
@@ -36,8 +36,12 @@ const Blog = () => {
     <>
       <Grid container spacing={2} style={{ margin: '15px' }}>
         {blogData.map((blog) => (
-          <Grid item xs={12} md={4} key="blog._id">
-            <Card sx={{ maxWidth: 345, maxHeight: 450 }} class="blog-card">
+          <Grid item xs={12} md={4}>
+            <Card
+              key="blog.title"
+              sx={{ maxWidth: 345, maxHeight: 450 }}
+              class="blog-card"
+            >
               <CardMedia sx={{ height: 140 }} image={blog.image} src="" />
               <CardContent>
                 <Typography variant="h6" color="text.secondary">
@@ -61,6 +65,7 @@ const Blog = () => {
           </Grid>
         ))}
       </Grid>
+      <Copyright />
     </>
   );
 };
