@@ -15,6 +15,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosClient from '../api-client';
+import notFound from '../assets/images/not-found-1.jpg';
 
 export const AppointmentHistory = () => {
   const { userData: user } = useSelector((state) => state.authStatus);
@@ -190,16 +191,38 @@ export const AppointmentHistory = () => {
           </Card>
         ))
       ) : (
-        <Typography variant="h6" component="h6">
-          You don't have any appointments yet!! <br />
-          {role === 'doctor' ? null : (
-            <Button size="small" variant="contained">
-              <Link to={'/findDoctor'} className="link white">
-                Book Appointment
-              </Link>
-            </Button>
-          )}
-        </Typography>
+        <>
+          <Grid container spacing={1}>
+            <Grid item xs={6} style={centerStyle}>
+              <img
+                src={notFound}
+                alt="not-found"
+                style={{
+                  height: '500px',
+                  marginRight: 'auto',
+                  marginTop: '20px',
+                  width: '570px',
+                }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Typography
+                variant="h6"
+                component="h6"
+                style={{ position: 'relative', top: '50%' }}
+              >
+                Ahh! No Appointments.. <br />
+                {role === 'doctor' ? null : (
+                  <Button size="small" variant="contained">
+                    <Link to={'/findDoctor'} className="link white">
+                      Book Now
+                    </Link>
+                  </Button>
+                )}
+              </Typography>
+            </Grid>
+          </Grid>
+        </>
       )}
     </>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../api-client';
 import { SearchBar } from './SearchBar';
-import { Copyright } from '../MuiComponents/Copyright';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import {
   Typography,
   Card,
@@ -128,25 +128,6 @@ export const FindDoctor = () => {
     navigate('/findDoctor/' + id);
   };
 
-  const SkeletonLoading = () => (
-    <Box sx={{ p: 1 }}>
-      <Typography variant="h4">
-        <Skeleton width="30%" />
-      </Typography>
-      <Grid container wrap="nowrap">
-        {Array.from(new Array(3)).map((item, index) => (
-          <Box key={index} sx={{ width: 350, marginRight: 1, my: 2 }}>
-            <Skeleton variant="rectangular" width={350} height={118} />
-            <Box sx={{ pt: 0.5 }}>
-              <Skeleton />
-              <Skeleton width="60%" />
-            </Box>
-          </Box>
-        ))}
-      </Grid>
-    </Box>
-  );
-
   const changePage = async (event, pageNo) => {
     let doctors = [];
     if (category) {
@@ -192,15 +173,26 @@ export const FindDoctor = () => {
                     title={doc.firstName}
                   />
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      style={{ color: '#60a5dd' }}
+                    >
                       {doc.firstName} {doc.lastName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       {doc.yearsOfExperience} years of experience
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {doc.about}
+                    <Typography variant="body2">
+                      ₹ {doc.consultationFee} fee
                     </Typography>
+                    <div style={{ display: 'flex' }}>
+                      <LocationOnIcon />
+                      <Typography variant="body2" color="text.secondary">
+                        {doc.clinicCity}, {doc.clinicState}, India
+                      </Typography>
+                    </div>
                   </CardContent>
                   <CardActions>
                     <Button
@@ -209,7 +201,7 @@ export const FindDoctor = () => {
                       onClick={() => showDoctor(doc.userId)}
                       style={{ marginLeft: 'auto', marginRight: 'auto' }}
                     >
-                      Book Now
+                      Book Clinic Visit
                     </Button>
                   </CardActions>
                 </Card>
@@ -232,7 +224,6 @@ export const FindDoctor = () => {
       ) : (
         ''
       )}
-      <Copyright />
     </>
   );
 };

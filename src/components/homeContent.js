@@ -4,7 +4,6 @@ import '../css/home.css';
 import image from '../assets/images/banner.png';
 import { useNavigate } from 'react-router-dom';
 import { SearchBar } from './SearchBar';
-import { Copyright } from '../MuiComponents/Copyright';
 import dogImage from '../assets/images/dog.jpg';
 import catImage from '../assets/images/cat.jpg';
 import cowImage from '../assets/images/cow.jpg';
@@ -173,7 +172,6 @@ export const HomeContent = () => {
             </Grid>
           ))}
         </Grid>
-        <Copyright />
       </Card>
     </>
   );

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axiosClient from '../api-client';
-import { Copyright } from '../MuiComponents/Copyright';
 const BlogDetail = (props) => {
   const [params] = useSearchParams();
   const [blogData, setBlogData] = React.useState({ __html: '' });
@@ -23,7 +22,6 @@ const BlogDetail = (props) => {
   return (
     <>
       <div dangerouslySetInnerHTML={blogData} />
-      <Copyright />
     </>
   );
 };

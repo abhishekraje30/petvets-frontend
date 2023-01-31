@@ -42,10 +42,11 @@ const Payment = forwardRef((props, ref) => {
 
   const formik = useFormik({
     initialValues: {
-      cardHolderName: '',
-      cardNumber: '',
-      cardMonth: '',
-      cardYear: '',
+      cardHolderName: 'John Doe',
+      cardNumber: '5555555555554444',
+      cardMonth: '12',
+      cardYear: '2034',
+      cardCvv: '123',
     },
     validationSchema: PaymentSchema,
     onSubmit: (values, { setSubmitting }) => {

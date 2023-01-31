@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Copyright } from '../MuiComponents/Copyright';
 import axiosClient from '../api-client';
 import '../css/blog.css';
 import {
@@ -65,7 +64,6 @@ const Blog = () => {
           </Grid>
         ))}
       </Grid>
-      <Copyright />
     </>
   );
 };

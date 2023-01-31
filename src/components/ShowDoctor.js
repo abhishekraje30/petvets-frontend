@@ -277,9 +277,6 @@ export const ShowDoctor = () => {
                 <Typography variant="body2" color="text.secondary">
                   {doctor.yearsOfExperience} years of experience
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {doctor.about}
-                </Typography>
                 <Typography variant="body2" color="#1976d2">
                   ₹ {doctor.consultationFee} fee
                 </Typography>
@@ -453,6 +450,7 @@ export const ShowDoctor = () => {
 
             {activeStep < 2 && (
               <Button
+                variant="contained"
                 onClick={activeStep === 0 ? handleNext : handleSubmit}
                 disabled={
                   (activeStep === 0 && !selectedSlot) ||
@@ -490,7 +488,7 @@ export const ShowDoctor = () => {
               Services
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {doctor.about}
+              {doctor.firstName} {doctor.lastName} {doctor.about}
             </Typography>
           </CardContent>
         </Card>
