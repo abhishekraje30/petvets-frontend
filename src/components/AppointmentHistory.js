@@ -54,7 +54,6 @@ export const AppointmentHistory = () => {
   }, [role, user]);
 
   const showDoctor = (id) => {
-    console.log(id);
     navigate('/findDoctor/' + id);
   };
 
@@ -67,7 +66,6 @@ export const AppointmentHistory = () => {
     width: '100%',
     height: '100%',
     position: 'fixed',
-    // background: '#ccc',
     opacity: 0.5,
     zIndex: 1,
   });
@@ -106,7 +104,7 @@ export const AppointmentHistory = () => {
 
   return (
     <>
-      {loading && (
+      {loading && !appointments.length && (
         <Box>
           <CircularLoading />
         </Box>

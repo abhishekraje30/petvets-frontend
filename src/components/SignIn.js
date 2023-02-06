@@ -82,12 +82,10 @@ export const SignIn = () => {
         setLoading(false);
         setRedirect(true);
       } catch (error) {
-        const errorCode = error.code;
         if (error.code === 'auth/wrong-password')
           setFirebaseError('Please enter correct password');
         if (error.code === 'auth/user-not-found')
           setFirebaseError('User is not registered');
-        console.log(errorCode);
         setLoading(false);
       }
     } else if (role === 'doctor') {
@@ -101,12 +99,10 @@ export const SignIn = () => {
         setLoading(false);
         setRedirect(true);
       } catch (error) {
-        const errorCode = error.code;
         if (error.code === 'auth/wrong-password')
           setFirebaseError('Please enter correct password');
         if (error.code === 'auth/user-not-found')
           setFirebaseError('User is not registered');
-        console.log(errorCode);
         setLoading(false);
       }
     } else {
@@ -120,12 +116,10 @@ export const SignIn = () => {
         setLoading(false);
         setRedirect(true);
       } catch (error) {
-        const errorCode = error.code;
         if (error.code === 'auth/wrong-password')
           setFirebaseError('Please enter correct password');
         if (error.code === 'auth/user-not-found')
           setFirebaseError('User is not registered');
-        console.log(errorCode);
         setLoading(false);
       }
     }
@@ -142,12 +136,10 @@ export const SignIn = () => {
       setLoading(false);
       setRedirect(true);
     } catch (error) {
-      const errorCode = error.code;
       if (error.code === 'auth/wrong-password')
         setFirebaseError('Please enter correct password');
       if (error.code === 'auth/user-not-found')
         setFirebaseError('User is not registered');
-      console.log(errorCode);
       setLoading(false);
     }
   };

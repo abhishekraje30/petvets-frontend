@@ -143,8 +143,8 @@ export const HomeContent = () => {
           </Typography>
         </>
         <Grid container spacing={2} style={{ margin: '15px' }}>
-          {blogData.map((blog) => (
-            <Grid item xs={12} md={4} key="blog._id">
+          {blogData.map((blog, index) => (
+            <Grid item xs={12} md={4} key={index}>
               <Card
                 sx={{ maxWidth: 345, maxHeight: 450 }}
                 className={classes.blogCard}

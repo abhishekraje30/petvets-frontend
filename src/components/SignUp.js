@@ -152,7 +152,6 @@ export const SignUp = (props) => {
       if (error.code === 'auth/weak-password')
         setFirebaseError('Please set strong password');
       setLoading(false);
-      console.log(error.code);
     }
   };
 

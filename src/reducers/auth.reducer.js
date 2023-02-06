@@ -15,7 +15,6 @@ export const fetchUser = createAsyncThunk('FETCH_USER', async (user) => {
       const { data } = await axiosClient.get(`/api/users/${userId}`);
       return data;
     } catch (error) {
-      console.log(error);
       throw new Error(400);
     }
   } else {
@@ -38,10 +37,9 @@ export const authSlice = createSlice({
       userData: action.payload,
       getUserLoading: false,
     }));
-    builder.addCase(fetchUser.rejected, (state, action) => {
-      console.log(action.payload);
-      return { ...initialState };
-    });
+    builder.addCase(fetchUser.rejected, (state, action) => ({
+      ...initialState,
+    }));
   },
   reducers: {
     signout: (state) => {

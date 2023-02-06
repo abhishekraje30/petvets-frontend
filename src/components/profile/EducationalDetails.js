@@ -77,7 +77,6 @@ const EducationalDetails = () => {
     initialValues: { ...initialValues },
     validationSchema: educationValidation,
     onSubmit: (values) => {
-      console.log(values);
       setEducation([...education, values]);
       setOpen(false);
     },
@@ -86,7 +85,6 @@ const EducationalDetails = () => {
   const dispatch = useDispatch();
 
   const handleSave = () => {
-    console.log(education);
     userUpdate.mutate({
       userId,
       degree: education,

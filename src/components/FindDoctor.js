@@ -11,8 +11,6 @@ import {
   CardMedia,
   Button,
   Grid,
-  Skeleton,
-  Box,
   Pagination,
 } from '@mui/material';
 
@@ -33,7 +31,7 @@ export const FindDoctor = () => {
     let doctors = {};
     if (searchedDoctor && searchedCity) {
       doctors = await axiosClient.get(
-        `es/results?doctor=${searchedDoctor}&city=${searchedCity.name}`
+        `es/results?doctor=${searchedDoctor.firstName}&city=${searchedCity.name}`
       );
     } else if (searchedDoctor && !searchedCity) {
       doctors = await axiosClient.get(
@@ -209,8 +207,8 @@ export const FindDoctor = () => {
             ))}
         </Grid>
       ) : (
-        <Typography variant="h4" component="h4">
-          <span className="no-doctor">No Doctor found</span>
+        <Typography variant="h4" component="h4" className="no-doctor">
+          <span>No Doctor found</span>
         </Typography>
       )}
 

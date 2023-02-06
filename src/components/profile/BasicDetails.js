@@ -97,7 +97,6 @@ const BasicDetails = ({ userId, userData }) => {
     initialValues: { ...initialValues },
     validationSchema: profileValidation,
     onSubmit: (values) => {
-      console.log(userId);
       userUpdate.mutate({
         userId,
         ...values,
@@ -113,11 +112,9 @@ const BasicDetails = ({ userId, userData }) => {
           userId,
           profileURL: imgPath,
         });
-        console.log('Uploaded a blob or file!');
       });
       setSnackbarMessage('User updated successfully');
       setOpen(true);
-      console.log(values);
     },
   });
 

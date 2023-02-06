@@ -34,13 +34,9 @@ const Blog = () => {
   return (
     <>
       <Grid container spacing={2} style={{ margin: '15px' }}>
-        {blogData.map((blog) => (
-          <Grid item xs={12} md={4}>
-            <Card
-              key="blog.title"
-              sx={{ maxWidth: 345, maxHeight: 450 }}
-              class="blog-card"
-            >
+        {blogData.map((blog, index) => (
+          <Grid item xs={12} md={4} key={index}>
+            <Card sx={{ maxWidth: 345, maxHeight: 450 }} class="blog-card">
               <CardMedia sx={{ height: 140 }} image={blog.image} src="" />
               <CardContent>
                 <Typography variant="h6" color="text.secondary">

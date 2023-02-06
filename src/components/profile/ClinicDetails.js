@@ -68,9 +68,7 @@ const ClinicDetails = () => {
   };
 
   const userUpdate = useMutation(updateUserProfileAPI, {
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    onSuccess: (data) => {},
   });
 
   const formik = useFormik({
